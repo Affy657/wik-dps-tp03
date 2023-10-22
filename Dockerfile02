@@ -1,0 +1,10 @@
+FROM rust:latest
+WORKDIR /home/src/app
+COPY . .
+ENV RUSTFLAGS="-C target-feature=+crt-static"
+RUN cargo build --release
+
+FROM scratch
+COPY --from=0 /home/src/app/target/release/wik-dps-tp01 /app/wik-dps-tp01
+EXPOSE 7878
+CMD ["/app/wik-dps-tp01"]
